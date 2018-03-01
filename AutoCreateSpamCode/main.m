@@ -178,6 +178,12 @@ static NSString *const kMClassFileTemplate = @"\
 
 void generateSpamCodeFile(NSString *outDirectory,NSString *className){
     
+    //创建目录
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if (![fileManager fileExistsAtPath:outDirectory isDirectory:NO]) {
+        [fileManager createDirectoryAtPath:outDirectory withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    
     NSString *importString = @"#import <Foundation/Foundation.h> \n";
     
     NSMutableString *hFileMethodsString = [NSMutableString string];
