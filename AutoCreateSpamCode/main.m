@@ -22,7 +22,7 @@ int main(int argc, const char * argv[]) {
         //输出路径
         NSString *outDirectory = @"/Users/zengchunjun/workspace/SDK_Tools/SpamCode2";
 //        NSString *className = @"ClassName";
-        int count = 66;
+        int count = 100;
         while (count > 1) {
             NSString *className = getRandomClassName(6);//随机字符串
             
@@ -55,7 +55,7 @@ NSString * getRandomStringsWithLow(int length){
 NSString *getClassPrefixString(){
     
     NSString *string = @"BAG_Class_";
-    NSArray *strings = @[@"BPG_Class_",@"BAG_Class_",@"BMG_A14_",@"QPG_A13_",@"FAG_Class_",@"WME_Class_",@"TPY_A15_",@"UAD_Class_",@"MSG_A14_",@"MSB_Class_",@"NSG_A11_",@"OKG_A15_",@"SBG_A13_",@"SNK_Class_",@"SSW_A12_"];
+    NSArray *strings = @[@"A_A02_E",@"B_A01_F",@"C_A14_G",@"D_A13_H",@"E_A03_I",@"F_A04_J",@"G_A15_K",@"H_A05_L",@"I_A14_M",@"J_A06_N",@"K_A11_O",@"L_A15_P",@"M_A13_Q",@"N_A07_U",@"O_A12_W",@"P_A13_V",@"Q_A14_Y",@"S_A15_Z",@"T_16_S",@"Y_A17_T",@"Z_A18_A"];
     string = strings[(int)(arc4random() % strings.count)];
     return string;
 }
@@ -64,7 +64,7 @@ NSString *getClassPrefixString(){
 NSString *getMethodPrefixString(){
     
     NSString *string = @"BAG_method_";
-    NSArray *strings = @[@"bpg_methods_",@"bag_X11_",@"bmg_X12_",@"qpg_method_",@"fag_method_",@"wme_X13_",@"tpy_method_",@"uad_X15_",@"msg_X13_",@"msb_X14_",@"nsg_method_",@"okg_X12_",@"sbg_method_",@"snk_X15_",@"ssw_X11_"];
+    NSArray *strings = @[@"bpg_X01_",@"bag_X11_",@"bmg_X12_",@"qpg_X03_",@"fag_X05_",@"wme_X13_",@"tpy_X06_",@"uad_X15_",@"msg_X13_",@"msb_X14_",@"nsg_X18_",@"okg_X12_",@"sbg_X19_",@"snk_X15_",@"ssw_X11_",@"ac_X19_",@"ef_X20_",@"cd_X09_",@"of_X12_",@"tt_X01_",@"st_X08_"];
     string = strings[(int)(arc4random() % strings.count)];
     return string;
 }
@@ -190,7 +190,7 @@ void generateSpamCodeFile(NSString *outDirectory,NSString *className){
     NSMutableString *mFileMethodsString = [NSMutableString string];
     
 //    NSString *methodName = @"methodName";
-    NSString *gOutParameterName = getRandomClassName(7);
+    NSString *gOutParameterName = getMethodPrefixString();
     
     //生成多个方法
     for (NSString *methodName in getMethodNamesSet()) {
