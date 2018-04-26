@@ -14,26 +14,40 @@ NSString *PublicHeader = @"APublicHeader.h";
 NSString *publicCallClassName = @"ASpamCode_Public";
 //垃圾代码输出路径
 NSString *outDirectory = @"/Users/zengchunjun/workspace/SDK_Tools/SpamCode2";
-
+//NSString *outDirectory = @"/Users/zengchunjun/Desktop/123456/123456/Test";
 
 
 void generateSpamCodeFile(); //生成垃圾代码
 
-NSString *getRandomClassName(int length);//获取随机类名
+NSString * getRandromString();
+
+NSString *getRandomClassName(NSString *prefixStr);//获取随机类名
 
 NSString *beforeClass = nil; //上一个类名
 NSString *beforeClassMethod = nil; //上一个类的方法名 前半段
 NSString *beforeClassArg = nil;//上一个类的参数 后半段方法名
 
+
+
+void runSystemCommand(NSString *cmd)
+{
+    [[NSTask launchedTaskWithLaunchPath:@"/bin/sh"
+                              arguments:@[@"-c", cmd]]
+     waitUntilExit];
+}
+
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
         // insert code here...
-        NSLog(@"Hello, World!");
         
+        NSArray<NSString *> *arguments = [[NSProcessInfo processInfo] arguments];
+        for (int i = 0; i < arguments.count; i++) {
+            NSLog(@"arguments[%d]:%@",i,arguments[i]);
+        }
     
-        int count = 88;
+        int count = 300;
         while (count > 0) {
-            NSString *className = getRandomClassName(7);//随机字符串
+            NSString *className = getRandomClassName(@"WHH_");//随机字符串
 
             generateSpamCodeFile(outDirectory,className);
             
@@ -41,6 +55,9 @@ int main(int argc, const char * argv[]) {
         }
         
         generateSpamCodeFile(outDirectory, publicCallClassName);//生成一个唯一的类，用来外界调用
+        
+        
+//        runSystemCommand(@"/Users/zengchunjun/Desktop/123456/test.rb");
         
     }
     return 0;
@@ -54,7 +71,7 @@ NSString * getRandomStringsWithLow(int length){
     
     for (int x=0;x < length; data[x++] = (char)('A' + (arc4random_uniform(26))));
     
-    NSString *randomStr = [[NSString alloc] initWithBytes:data length:6 encoding:NSUTF8StringEncoding];
+    NSString *randomStr = [[NSString alloc] initWithBytes:data length:length encoding:NSUTF8StringEncoding];
     
     NSString *string = [NSString stringWithFormat:@"%@",randomStr];
     
@@ -82,16 +99,18 @@ NSString *getMethodPrefixString(){
 
 
 #pragma mark:获取随机 类名
-NSString *getRandomClassName(int length)
+NSString *getRandomClassName(NSString *prefixStr)
 {
+    int length = (arc4random() % 6) + 2;
+    
     //获取随机字符串
     NSString *randomStr = getRandomStringsWithLow(length);
     
-    NSString *string = [NSString stringWithFormat:@"%@",randomStr];
+    NSString *string = [NSString stringWithFormat:@"%@_%@",randomStr,getRandromString()];
     string = [[string lowercaseString] capitalizedString];//转换首字母大写
     
 //    return [getClassPrefixString() stringByAppendingString:string];
-    string = [[@"BJ7_" stringByAppendingString:string] stringByAppendingString:@"_C9S"];
+    string = [prefixStr stringByAppendingString:string];
     return string;
 }
 
@@ -100,9 +119,11 @@ NSString * getRandromString(){
     
     NSString *string = @"temp";
     
-    NSArray<NSString *> *strings = @[@"parameter",@"apple",@"wangyi",@"tencent",@"abcd",@"game",@"flipped",@"crush",@"nostalgia",@"ephemeral",@"effervescence",@"evanescence",@"rendezvous",@"reminisce",@"bazinga",@"serendipity",@"mellifluous",@"petrichor",@"eudemonia",@"mother",@"passion",@"eternity",@"fantastic",@"freedom",@"tranquility",@"sweetheart",@"gorgeous",@"sophisticated",@"renaissance",@"cosmopolitan",@"bumblebee",@"umbrella",@"flabbergasted",@"hippopotamus",@"smashing",@"loquacious",@"smithereens",@"hodgepodge",@"shipshape",@"explosion",@"fuselage",@"zing",@"believe",@"Smithereens",@"final",@"Galaxy",@"Butterfly",@"Rainbow",@"Destiny"];
+    NSArray<NSString *> *strings = @[@"parameter",@"viewController",@"apple",@"wangyi",@"view",@"tableviewController",@"tencent",@"abcd",@"game",@"flipped",@"crush",@"nostalgia",@"viewController",@"ephemeral",@"effervescence",@"evanescence",@"rendezvous",@"reminisce",@"bazinga",@"viewController",@"serendipity",@"mellifluous",@"petrichor",@"viewController",@"eudemonia",@"mother",@"passion",@"eternity",@"fantastic",@"freedom",@"tranquility",@"sweetheart",@"gorgeous",@"viewController",@"sophisticated",@"renaissance",@"viewController",@"cosmopolitan",@"bumblebee",@"umbrella",@"viewController",@"flabbergasted",@"hippopotamus",@"viewController",@"smashing",@"loquacious",@"smithereens",@"hodgepodge",@"shipshape",@"viewController",@"viewController",@"explosion",@"fuselage",@"zing",@"believe",@"Smithereens",@"final",@"Galaxy",@"Butterfly",@"Rainbow",@"Destiny"];
     
     string = strings[(int)(arc4random() % strings.count)];
+    
+//    string = [string stringByAppendingString:[NSString stringWithFormat:@"_X%.2d_",(int)(arc4random() % 18) + 1]];
     
     return string;
 }
@@ -247,6 +268,7 @@ void generateSpamCodeFile(NSString *outDirectory,NSString *className){
    
     //往对外的头文件中写入 #import "xxxxx.h"数据
     writeDataToEndOfFile(headerFilePath, importClassH);
+    
     
     //初始化一个.h .m文件的内容
     NSMutableString *hFileMethodsString = [NSMutableString string];
